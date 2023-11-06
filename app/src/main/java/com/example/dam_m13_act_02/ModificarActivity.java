@@ -41,7 +41,7 @@ public class ModificarActivity extends MainActivity implements View.OnClickListe
         textViewNombreResultado = findViewById(R.id.editTextNombreResultado);
         textViewApellidosResultado = findViewById(R.id.editTextApellidosResultado);
         textViewDeparamentoResultado = findViewById(R.id.editTextDepartamentoResultado);
-        textViewApellidosResultado.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        //textViewApellidosResultado.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         buttonAtras = findViewById(R.id.buttonBack);
         buttonAtras.setOnClickListener(this);
@@ -56,9 +56,9 @@ public class ModificarActivity extends MainActivity implements View.OnClickListe
         depto = intent.getStringExtra("DEPTO_KEY");
 
         // Display the data in TextViews or handle it as needed
-        textViewNombreResultado.setText(nombre);
-        textViewApellidosResultado.setText(apellidos);
-        textViewDeparamentoResultado.setText(depto);
+        textViewNombreResultado.setText("Nombre:\n"+nombre);
+        textViewApellidosResultado.setText("Apellidos:\n"+apellidos);
+        textViewDeparamentoResultado.setText("Departamento:\n"+depto);
 
     }
     @Override
@@ -89,41 +89,30 @@ public class ModificarActivity extends MainActivity implements View.OnClickListe
             PreparedStatement checkStatement = null;
 
             try {
-                // Carga el controlador JDBC para MySQL
                 Class.forName("com.mysql.jdbc.Driver");
 
-                // Establece la conexión con tu base de datos en PhpMyAdmin
                 connection = (Connection) DriverManager.getConnection(
                         "jdbc:mysql://10.0.2.2/empresa",
                         "androidDBUser",
                         "0310");
 
-
-                // If there are no results, the record does not exist, so insert it
-                    System.out.println("Entrando al UPDATE");
-                    // Procesa los resultados
-                    // Crea una declaración SQL y ejecuta la consulta
                     String insertQuery = "UPDATE empleados set nombre = ? , contrasena = ?, departamento = ? where nombre = ? and contrasena = ? and departamento = ?";
                     preparedStatement = connection.prepareStatement(insertQuery);
-                    preparedStatement.setString(1, textViewNombreResultado.getText().toString());
-                    preparedStatement.setString(2, textViewApellidosResultado.getText().toString());
-                    preparedStatement.setString(3, textViewDeparamentoResultado.getText().toString());
+                    preparedStatement.setString(1, textViewNombreResultado.getText().toString().replace("Nombre:\n",""));
+                    preparedStatement.setString(2, textViewApellidosResultado.getText().toString().replace("Apellidos:\n",""));
+                    preparedStatement.setString(3, textViewDeparamentoResultado.getText().toString().replace("Departamento:\n",""));
 
                     preparedStatement.setString(4, nombre);
                     preparedStatement.setString(5, apellidos);
                     preparedStatement.setString(6, depto);
 
-                    // Execute the insert statement
                     preparedStatement.executeUpdate();
                     completadoOK = true;
 
-                // Cierra la conexión
                 connection.close();
             } catch (Exception e) {
                 e.printStackTrace();
-
                 result = "Error: " + e.getMessage();
-
             }
 
             return result;

@@ -84,49 +84,49 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="-52dp" />
 
-    <EditText
-        android:id="@+id/editTextNombreResultado"
-        android:layout_width="146dp"
-        android:layout_height="147dp"
-        android:editable="true"
-        android:ems="10"
-        android:hint="nombre"
-        android:inputType="text"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.112"
-        tools:layout_editor_absoluteX="26dp" />
-
 
     <EditText
         android:id="@+id/editTextDepartamentoResultado"
-        android:layout_width="122dp"
-        android:layout_height="143dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="104dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
         android:editable="true"
         android:ems="10"
         android:hint="departamento"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextApellidosResultado"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.116" />
+        app:layout_constraintVertical_bias="0.173" />
+
+    <EditText
+        android:id="@+id/editTextNombreResultado"
+        android:layout_width="104dp"
+        android:layout_height="80dp"
+        android:editable="true"
+        android:ems="10"
+        android:hint="nombre"
+        android:inputType="textMultiLine"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.174"
+        tools:layout_editor_absoluteX="34dp" />
 
     <EditText
         android:id="@+id/editTextApellidosResultado"
-        android:layout_width="122dp"
-        android:layout_height="147dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="104dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="12dp"
         android:editable="true"
         android:ems="10"
         android:hint="contraseña"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextNombreResultado"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.109"  />
+        app:layout_constraintVertical_bias="0.174" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

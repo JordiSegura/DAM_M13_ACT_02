@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("CONTRASEÑA_KEY", textViewApellidosBuscar.getText().toString());
             intent.putExtra("DEPTO_KEY", textViewDeparamentoBuscar.getText().toString());
 
-
             startActivity(intent);
         } else if (viewId == R.id.buttonCrear) {
             System.out.println("buttonCrear ");
@@ -117,11 +116,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("buttonBorrar ");
             new DeleteDatafromDatabase().execute();
         } else if (viewId == R.id.buttonModificar) {
-
-                System.out.println("buttonModificar ");
-
+            System.out.println("buttonModificar ");
             new CheckDataToDatabase().execute();
             System.out.println(checkExist);
+            for (int i = 0; i < 2; i++) {
 
             if (checkExist) {
                 Intent intent = new Intent(MainActivity.this, ModificarActivity.class);
@@ -129,20 +127,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("NOMBRE_KEY", textViewNombreModificar.getText().toString());
                 intent.putExtra("CONTRASEÑA_KEY", textViewApellidosModificar.getText().toString());
                 intent.putExtra("DEPTO_KEY", textViewDeparamentoModificar.getText().toString());
-
-
                 startActivity(intent);
 
-            } else if (!checkExist){
-
+            } else if (!checkExist) {
                 Toast.makeText(MainActivity.this, "No record has been found in database. Please check the information and try again", Toast.LENGTH_LONG).show();
+            }}
 
-            }
-
-        }else if (viewId == R.id.buttonLogout) {
+        } else if (viewId == R.id.buttonLogout) {
             System.out.println("buttonLogout ");
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);        }
+            startActivity(intent);
+        }
 
     }
 
@@ -161,60 +156,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             PreparedStatement preparedStatement = null;
             Connection connection = null;
             PreparedStatement checkStatement = null;
-
-
             try {
                 String nombreC = String.valueOf(textViewNombreCrear.getText());
                 String apellidosC = String.valueOf(textViewApellidosCrear.getText());
                 String departamentoC = String.valueOf(textViewDeparamentoCrear.getText());
 
-
-                // Carga el controlador JDBC para MySQL
                 Class.forName("com.mysql.jdbc.Driver");
-
-                // Establece la conexión con tu base de datos en PhpMyAdmin
                 connection = (Connection) DriverManager.getConnection(
                         "jdbc:mysql://10.0.2.2/empresa",
                         "androidDBUser",
                         "0310");
 
-                // Check if the record already exists in the database
-                String checkQuery = "SELECT * FROM empleados WHERE nombre = ? AND ( contrasena = ?) or departamento = ?";
+                String checkQuery = "SELECT * FROM empleados WHERE  contrasena = ?";
                 checkStatement = connection.prepareStatement(checkQuery);
-                checkStatement.setString(1, nombreC);
-                checkStatement.setString(2, apellidosC);
-                checkStatement.setString(3, departamentoC);
-
+                checkStatement.setString(1, apellidosC);
+                //checkStatement.setString(2, apellidosC);
+                //checkStatement.setString(3, departamentoC);
                 ResultSet resultSet = checkStatement.executeQuery();
 
-
-                // If there are no results, the record does not exist, so insert it
                 if (!resultSet.next()) {
-
-                    // Procesa los resultados
-                    // Crea una declaración SQL y ejecuta la consulta
                     String insertQuery = "INSERT INTO empleados (nombre, contrasena, departamento) VALUES (?,?,?)";
                     preparedStatement = connection.prepareStatement(insertQuery);
                     preparedStatement.setString(1, nombreC);
                     preparedStatement.setString(2, apellidosC);
                     preparedStatement.setString(3, departamentoC);
-
-                    // Execute the insert statement
                     preparedStatement.executeUpdate();
                     completadoOK = true;
                 } else if (resultSet.next()) {
                     completadoOK = false;
                 }
-
-
-                // Cierra la conexión
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
-
-
             } finally {
                 try {
-                    // Close resources
                     if (preparedStatement != null) {
                         preparedStatement.close();
                     }
@@ -225,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
             }
-
             return result;
         }
 
@@ -262,40 +235,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String nombreC = String.valueOf(textViewNombreModificar.getText());
                 String apellidosC = String.valueOf(textViewApellidosModificar.getText());
                 String departamentoC = String.valueOf(textViewDeparamentoModificar.getText());
-
-
-                // Carga el controlador JDBC para MySQL
                 Class.forName("com.mysql.jdbc.Driver");
-
-                // Establece la conexión con tu base de datos en PhpMyAdmin
                 connection = (Connection) DriverManager.getConnection(
                         "jdbc:mysql://10.0.2.2/empresa",
                         "androidDBUser",
                         "0310");
-
-                // Check if the record already exists in the database
                 String checkQuery = "SELECT * FROM empleados WHERE nombre = ? AND  contrasena = ? ";
                 checkStatement = connection.prepareStatement(checkQuery);
                 checkStatement.setString(1, nombreC);
                 checkStatement.setString(2, apellidosC);
-
-
                 ResultSet resultSet = checkStatement.executeQuery();
 
-
-                // If there are no results, the record does not exist, so insert it
                 if (resultSet.next()) {
 
                     checkExist = true;
-                } else  {
+                } else {
                     checkExist = false;
                 }
-
-                // Cierra la conexión
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
-
-
             } finally {
                 try {
                     // Close resources
@@ -317,9 +275,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         protected void onPostExecute(String result) {
             System.out.println("onPostExecute-Check");
             System.out.println(checkExist);
-            if (checkExist){
+            if (checkExist) {
                 checkExist = true;
-            } else if (!checkExist){
+            } else if (!checkExist) {
                 checkExist = false;
             }
 
@@ -339,63 +297,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Connection connection = null;
 
             try {
-                String nombreC = String.valueOf(textViewNombreCrear.getText());
-                String apellidosC = String.valueOf(textViewApellidosCrear.getText());
-                String departamentoC = String.valueOf(textViewDeparamentoCrear.getText());
-
-
-                // Carga el controlador JDBC para MySQL
                 Class.forName("com.mysql.jdbc.Driver");
-
-                // Establece la conexión con tu base de datos en PhpMyAdmin
                 connection = (Connection) DriverManager.getConnection(
                         "jdbc:mysql://10.0.2.2/empresa",
                         "androidDBUser",
                         "0310");
 
-
-                // Crea una declaración SQL y ejecuta la consulta
                 String deleteQuery = "DELETE FROM empleados where nombre = ? and contrasena = ? and departamento = ? ";
                 preparedStatement = connection.prepareStatement(deleteQuery);
                 preparedStatement.setString(1, String.valueOf(textViewNombreBorrar.getText()));
                 preparedStatement.setString(2, String.valueOf(textViewApellidosBorrar.getText()));
                 preparedStatement.setString(3, String.valueOf(textViewDeparamentoBorrar.getText()));
 
-                // Execute the delete statement
                 preparedStatement.executeUpdate();
 
                 String nombreC2 = String.valueOf(textViewNombreBorrar.getText());
                 String apellidosC2 = String.valueOf(textViewApellidosBorrar.getText());
 
-
-                // Carga el controlador JDBC para MySQL
                 Class.forName("com.mysql.jdbc.Driver");
-
-                // Establece la conexión con tu base de datos en PhpMyAdmin
                 connection = (Connection) DriverManager.getConnection(
                         "jdbc:mysql://10.0.2.2/empresa",
                         "androidDBUser",
                         "0310");
-
-                // Check if the record already exists in the database
                 String checkQuery = "SELECT * FROM empleados WHERE nombre = ? AND  contrasena = ? ";
                 preparedStatement2 = connection.prepareStatement(checkQuery);
                 preparedStatement2.setString(1, nombreC2);
                 preparedStatement2.setString(2, apellidosC2);
-
-
                 ResultSet resultSet = preparedStatement2.executeQuery();
 
-
-                // If there are no results, the record does not exist, so insert it
                 if (!resultSet.next()) {
-
                     completadoOK = true;
-                } else  {
+                } else {
                     completadoOK = false;
                 }
-
-                // Cierra la conexión
             } catch (ClassNotFoundException | SQLException e) {
                 completadoOK = false;
                 e.printStackTrace();

@@ -149,7 +149,7 @@
         android:layout_marginEnd="4dp"
         android:ems="10"
         android:hint="contraseña"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editTextDepartamentoResultado"
